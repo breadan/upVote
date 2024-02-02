@@ -16,6 +16,16 @@ app.use(express.json());
 // Routes
 app.use(userRouter);
 
+//error handling
+app.all('*', (req, res, next) => {
+  return next(new Error(`page Not Found: ${req.url}`, { cause: 404 }));
+});
+
+//global error handling
+app.use((err, req, res, next) => {
+  const statusCode = err.cause || 500;
+  return res.status(statusCode).json({ message: err.message });
+});
 app.get('/', (req, res) => res.send(' World!'));
 
 app.listen(port, () => {

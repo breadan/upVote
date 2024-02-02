@@ -12,6 +12,6 @@ const userRouter = express.Router();
 
 userRouter.post('/v1/signupuser', expressAsyncHandler(signUpHandler));
 userRouter.post('/v1/signinuser', expressAsyncHandler(signInHandler));
-userRouter.get('/v1/userprofile', auth(), expressAsyncHandler(getUserProfile));
+userRouter.get('/v1/userprofile', auth, expressAsyncHandler(getUserProfile));
 
 export default userRouter;

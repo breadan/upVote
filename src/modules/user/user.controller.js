@@ -1,6 +1,7 @@
 import { userModel } from '../../../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import tokenModel from '../../../models/token.model.js';
 
 //signUp************************************************
 const signUpHandler = async (req, res, next) => {
@@ -44,27 +45,15 @@ const signInHandler = async (req, res, next) => {
       _id: isEmailExists._id,
       email: isEmailExists.email,
     },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIR,
-    }
+    process.env.JWT_SECRET
   );
-  console.log(typeof token);
-
-  //?
-  // res.cookie('token', token, {
-  //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-  //   httpOnly: true,
-  // });
-  console.log(req.headers); //{}
-  // console.log(req.query.token); //{undefined}
-  // console.log(req.body); //{email, password}
-
+  //add token in DB
+  await tokenModel.create({ token, userId: isEmailExists._id });
   return res.status(200).json({ message: 'User login successfully', token });
 };
 
 const getUserProfile = async (req, res) => {
-  res.status(200).json({ message: 'User profile', data: req.authUser });
+  res.status(200).json({ message: 'User profile', data: req.user });
 };
 
 export { signUpHandler, signInHandler, getUserProfile };
