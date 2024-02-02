@@ -56,7 +56,7 @@ const signInHandler = async (req, res, next) => {
   //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
   //   httpOnly: true,
   // });
-  console.log(req.query); //{}
+  console.log(req.headers); //{}
   // console.log(req.query.token); //{undefined}
   // console.log(req.body); //{email, password}
 
@@ -64,11 +64,7 @@ const signInHandler = async (req, res, next) => {
 };
 
 const getUserProfile = async (req, res) => {
-  const { token } = req.body;
-  // const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(typeof token);
-
-  return res.json({ message: 'Done', decoded });
+  res.status(200).json({ message: 'User profile', data: req.authUser });
 };
 
 export { signUpHandler, signInHandler, getUserProfile };
