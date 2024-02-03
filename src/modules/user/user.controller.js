@@ -46,13 +46,16 @@ const signInHandler = async (req, res, next) => {
       email: isEmailExists.email,
     },
     process.env.JWT_SECRET
+    // { expiresIn: process.env.JWT_EXPIRATION }
   );
   //add token in DB
   await tokenModel.create({ token, userId: isEmailExists._id });
   return res.status(200).json({ message: 'User login successfully', token });
 };
+//get User Profile************************************************
 
 const getUserProfile = async (req, res) => {
+  //req.user come from auth.middleware
   res.status(200).json({ message: 'User profile', data: req.user });
 };
 

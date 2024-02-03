@@ -13,13 +13,16 @@ const auth = async (req, res, next) => {
     if (!tokenDB) {
       return next(new Error(`Unauthorized`, { cause: 403 }));
     }
+
     const info = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(info);
+    if (!info || !info.id) {
+      return next(new Error(`Invalid Token Payload`, { cause: 400 }));
+    }
     const findUser = await userModel.findById(info._id);
     req.user = findUser;
     return next();
   } catch (err) {
-    return next(new Error(`Unauthorized`, { cause: 403 }));
+    return next(new Error(`Unauthorized`, { cause: 500 }));
   }
 };
 
