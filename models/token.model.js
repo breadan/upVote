@@ -18,10 +18,10 @@ const accessToken = new Schema(
   },
   { timestamps: true }
 );
-accessToken.methods.hasExpired = function () {
-  var now = Date.now();
-  return now - Date.parse(createDate) > 60000; // Date is converted to milliseconds to calculate 7 days it > one day = 24 hours * 60 minutes * 60 seconds *1000 milliseconds * 7 days = 604800000
-};
+// accessToken.methods.hasExpired = function () {
+//   var now = Date.now();
+//   return now - Date.parse(createDate) > 60000; // Date is converted to milliseconds to calculate 7 days it > one day = 24 hours * 60 minutes * 60 seconds *1000 milliseconds * 7 days = 604800000
+// };
 
 // accessToken.pre('save', async function (next) {
 //   const token = this
@@ -36,5 +36,6 @@ accessToken.methods.hasExpired = function () {
 //   } catch (error) {
 //     next(error)
 //   }
+
 const tokenModel = model('token', accessToken);
 export default tokenModel;
