@@ -65,4 +65,11 @@ const getUserProfile = async (req, res) => {
   res.status(200).json({ message: 'User profile', data: req.user });
 };
 
-export { signUpHandler, signInHandler, getUserProfile };
+//test photo Profile************************************************
+
+const testPhotoProfile = async (req, res, next) => {
+  //req.user come from auth.middleware
+  res.status(200).json({ message: 'User profile', data: req.file });
+};
+
+export { signUpHandler, signInHandler, getUserProfile, testPhotoProfile };
