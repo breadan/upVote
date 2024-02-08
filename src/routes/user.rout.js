@@ -11,6 +11,7 @@ import auth from '../middleware/auth.middleware.js';
 import validationMiddleware from '../middleware/validation.middleware.js';
 import signUpSchema from '../modules/user/user.validationSchemas.js';
 import { multerMiddle } from '../middleware/multer.js';
+import allowedExtensions from '../../utils/allowedExtensions.js';
 
 const userRouter = express.Router();
 // "[ ]"sign up user
@@ -26,7 +27,10 @@ userRouter.get('/v1/userprofile', auth, expressAsyncHandler(getUserProfile));
 // "[ ]"userprofile photo
 userRouter.post(
   '/v1/upload',
-  multerMiddle().single('profile'),
+  multerMiddle({
+    extensions: allowedExtensions.image,
+    filePath: 'customers/profiles',
+  }).single('profile'),
   expressAsyncHandler(testPhotoProfile)
 );
 

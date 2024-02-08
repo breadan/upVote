@@ -1,11 +1,21 @@
 import multer from 'multer';
-import { nanoid } from 'nanoid';
 import generateUniqueString from '../../utils/generateUniqueString.js';
+import allowedExtensions from '../../utils/allowedExtensions.js';
+import fs from 'fs';
+import path from 'path';
 
-export const multerMiddle = () => {
+export const multerMiddle = ({
+  extensions = allowedExtensions.image,
+  filePath = 'general',
+}) => {
+  //check file path
+  const destination = path.resolve(`uploads/${filePath}`);
+  if (!fs.existsSync(destination)) {
+    fs.mkdirSync(destination);
+  }
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, 'uploads');
+      cb(null, destination);
     },
     filename: (req, file, cb) => {
       console.log(file);
@@ -17,7 +27,7 @@ export const multerMiddle = () => {
   const fileFilter = (req, file, cb) => {
     // if (file.mimetype === 'video/mp4' || file.mimetype === 'image/png') {
     // if (['video/mp4', 'image/png', 'image/jpeg'].includes(file.mimetype)) {
-    if (['mp4', 'png', 'jpeg'].includes(file.mimetype.split('/')[1])) {
+    if (String(extensions).includes(file.mimetype.split('/')[1])) {
       return cb(null, true);
     } else {
       cb(new Error('file Formate Not Allowed'), false);
