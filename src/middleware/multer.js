@@ -11,7 +11,7 @@ export const multerMiddle = ({
   //check file path
   const destination = path.resolve(`uploads/${filePath}`);
   if (!fs.existsSync(destination)) {
-    fs.mkdirSync(destination);
+    fs.mkdirSync(destination, { recursive: true }); // recursive to create nested directories folders
   }
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {

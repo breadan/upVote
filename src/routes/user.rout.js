@@ -25,12 +25,25 @@ userRouter.post('/v1/signinuser', expressAsyncHandler(signInHandler));
 // "[ ]"userprofile
 userRouter.get('/v1/userprofile', auth, expressAsyncHandler(getUserProfile));
 // "[ ]"userprofile photo
+// userRouter.post(
+//   '/v1/upload',
+//   multerMiddle({
+//     extensions: allowedExtensions.image,
+//     filePath: 'profile',
+//   }).single('profile'),
+//   expressAsyncHandler(testPhotoProfile)
+// );
+// "[ ]"userprofile photo send many
 userRouter.post(
   '/v1/upload',
   multerMiddle({
     extensions: allowedExtensions.image,
-    filePath: 'customers/profiles',
-  }).single('profile'),
+    filePath: 'customer/profiles',
+  }).fields([
+    { name: 'profile', maxCount: 2 },
+    { name: 'profile1', maxCount: 1 },
+    { name: 'profile2', maxCount: 2 },
+  ]),
   expressAsyncHandler(testPhotoProfile)
 );
 
