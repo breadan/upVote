@@ -2,6 +2,7 @@ import { userModel } from '../../../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import tokenModel from '../../../models/token.model.js';
+import cloudinaryConnection from '../../../utils/cloudinary.js';
 
 //signUp************************************************
 const signUpHandler = async (req, res, next) => {
@@ -68,8 +69,35 @@ const getUserProfile = async (req, res) => {
 //test photo Profile************************************************
 
 const testPhotoProfile = async (req, res, next) => {
-  //req.user come from auth.middleware
   res.status(200).json({ message: 'User profile', data: req.files });
 };
 
-export { signUpHandler, signInHandler, getUserProfile, testPhotoProfile };
+//test photo Profile Host************************************************
+
+const profileHost = async (req, res, next) => {
+  //upload on cloudinary server
+  console.log(req.file);
+  const data = await cloudinaryConnection().uploader.upload(req.file.path, {
+    folder: 'upvote/profiles',
+    public_id: req.file.filename,
+  });
+  res.status(200).json({ message: 'User data', data });
+};
+
+//test demo Profile Host************************************************
+const demoHost = async (req, res, next) => {
+  const data = await cloudinaryConnection().uploader.upload(req.file.path, {
+    folder: 'upvote/videos',
+    resource_type: 'video',
+  });
+  res.status(200).json({ message: 'User data', data });
+};
+
+export {
+  signUpHandler,
+  signInHandler,
+  getUserProfile,
+  testPhotoProfile,
+  profileHost,
+  demoHost,
+};

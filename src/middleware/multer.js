@@ -36,3 +36,22 @@ export const multerMiddle = ({
   const file = multer({ fileFilter, storage });
   return file;
 };
+
+export const multerHost = ({ extensions = allowedExtensions.image }) => {
+  const storage = multer.diskStorage({
+    // to controller name
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  });
+  //file filter
+  const fileFilter = (req, file, cb) => {
+    if (String(extensions).includes(file.mimetype.split('/')[1])) {
+      return cb(null, true);
+    } else {
+      cb(new Error('file Formate Not Allowed'), false);
+    }
+  };
+  const file = multer({ fileFilter, storage });
+  return file;
+};

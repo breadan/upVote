@@ -1,7 +1,9 @@
 export { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {
+  demoHost,
   getUserProfile,
+  profileHost,
   signInHandler,
   signUpHandler,
   testPhotoProfile,
@@ -10,7 +12,7 @@ import express from 'express';
 import auth from '../middleware/auth.middleware.js';
 import validationMiddleware from '../middleware/validation.middleware.js';
 import signUpSchema from '../modules/user/user.validationSchemas.js';
-import { multerMiddle } from '../middleware/multer.js';
+import { multerHost, multerMiddle } from '../middleware/multer.js';
 import allowedExtensions from '../../utils/allowedExtensions.js';
 
 const userRouter = express.Router();
@@ -24,16 +26,26 @@ userRouter.post(
 userRouter.post('/v1/signinuser', expressAsyncHandler(signInHandler));
 // "[ ]"userprofile
 userRouter.get('/v1/userprofile', auth, expressAsyncHandler(getUserProfile));
-// "[ ]"userprofile photo
-// userRouter.post(
-//   '/v1/upload',
-//   multerMiddle({
-//     extensions: allowedExtensions.image,
-//     filePath: 'profile',
-//   }).single('profile'),
-//   expressAsyncHandler(testPhotoProfile)
-// );
-// "[ ]"userprofile photo send many
+
+// "[ ]"userprofile photo   //host
+userRouter.post(
+  '/v1/uploadHost',
+  multerHost({
+    extensions: allowedExtensions.image,
+  }).single('profile'),
+  expressAsyncHandler(profileHost)
+);
+
+// "[ ]"userprofile cv   //host
+userRouter.post(
+  '/v1/uploadVideoHost',
+  multerHost({
+    extensions: allowedExtensions.video,
+  }).single('demo'),
+  expressAsyncHandler(demoHost)
+);
+
+// "[ ]"userprofile photo send many //local
 userRouter.post(
   '/v1/upload',
   multerMiddle({
