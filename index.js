@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import './config/connection.js';
 import userRouter from './src/routes/user.rout.js';
+import productRouter from './src/routes/product.route.js';
+
 const port = process.env.PORT || 7000;
 const mode = process.env.NODE_ENV;
 //secure 2
@@ -17,6 +19,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Routes
 app.use(userRouter);
+app.use(productRouter);
 
 //error handling
 app.all('*', (req, res, next) => {

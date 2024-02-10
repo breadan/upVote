@@ -1,4 +1,3 @@
-export { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import {
   demoHost,
@@ -25,7 +24,7 @@ userRouter.post(
 // "[ ]"sign In user
 userRouter.post('/v1/signinuser', expressAsyncHandler(signInHandler));
 // "[ ]"userprofile
-userRouter.get('/v1/userprofile', auth, expressAsyncHandler(getUserProfile));
+userRouter.get('/v1/userprofile', auth, expressAsyncHandler(getUserProfile)); //auth,
 
 // "[ ]"userprofile photo   //host
 userRouter.post(
