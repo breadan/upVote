@@ -54,7 +54,6 @@ const updateProduct = async (req, res, next) => {
   if (caption) product.caption = caption;
 
   if (oldPublicId) {
-    console.log(oldPublicId);
     if (!req.file)
       return next(new Error('Please Upload the New Image', { cause: 400 }));
 
