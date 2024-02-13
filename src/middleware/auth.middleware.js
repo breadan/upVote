@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
       return next(new Error(`Unauthorized1`, { cause: 403 }));
     }
     token = token.split(process.env.TOKEN_ACCESS)[1];
-    console.log(token);
+    // console.log(token);
     const tokenDB = await tokenModel.findOne({ token, isValid: true });
     if (!tokenDB) {
       return next(new Error(`Unauthorized2`, { cause: 403 }));
