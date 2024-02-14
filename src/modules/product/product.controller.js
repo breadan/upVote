@@ -89,9 +89,20 @@ const deleteProduct = async (req, res) => {
 
   //check
   const product = await productModel.findOneAndDelete({
-    addedBy: _id,
+    addBy: _id,
     _id: productId,
+  });
+  if (!product) return next(new Error('Product Not Found', { cause: 404 }));
+
+  //create arr & push data to deleted
+  let publicIdsArr = [];
+  for (const image of product.images) {
+    publicIdsArr.push(image.public_id);
+  }
+  await cloudinaryConnection().api.delete_resources(publicIdsArr);
+  res.status(200).json({
+    message: 'Product deleted successfully',
   });
 };
 
-export { addProduct, updateProduct };
+export { addProduct, updateProduct, deleteProduct };

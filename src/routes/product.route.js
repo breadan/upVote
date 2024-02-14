@@ -3,6 +3,7 @@ import auth from '../middleware/auth.middleware.js';
 import { multerHost } from '../middleware/multer.js';
 import {
   addProduct,
+  deleteProduct,
   updateProduct,
 } from '../modules/product/product.controller.js';
 import express from 'express';
@@ -26,6 +27,12 @@ productRouter.put(
     extensions: allowedExtensions.image,
   }).single('image'),
   expressAsyncHandler(updateProduct)
+);
+
+productRouter.delete(
+  '/v1/deleteproduct/:productId',
+  auth,
+  expressAsyncHandler(deleteProduct)
 );
 
 export default productRouter;
