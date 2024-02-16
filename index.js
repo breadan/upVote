@@ -5,9 +5,28 @@ import './config/connection.js';
 import userRouter from './src/routes/user.rout.js';
 import productRouter from './src/routes/product.route.js';
 import likeRouter from './src/routes/like.route.js';
+import schedule from 'node-schedule';
 
 const port = process.env.PORT || 7000;
 const mode = process.env.NODE_ENV;
+
+const hello = () => {
+  console.log('hello');
+};
+setTimeout(function () {
+  hello();
+}, 1000);
+const job = schedule.scheduleJob('59 * * * *', async function () {
+  console.log('The answer to life, the universe, and everything!');
+  const info = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(info);
+  if (!info || !info._id) {
+    let data = await tokenModel.findByIdAndDelete(info.id);
+    console.log(info.id);
+    return next(new Error(`Invalid Token Payload`, { cause: 400 }));
+  }
+});
+
 //secure 2
 dotenv.config();
 
