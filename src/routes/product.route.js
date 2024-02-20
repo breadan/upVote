@@ -4,6 +4,7 @@ import { multerHost } from '../middleware/multer.js';
 import {
   addProduct,
   deleteProduct,
+  getAllProducts,
   updateProduct,
 } from '../modules/product/product.controller.js';
 import express from 'express';
@@ -11,8 +12,9 @@ import allowedExtensions from '../../utils/allowedExtensions.js';
 
 const productRouter = express.Router();
 
+//Add Product ************************************************
 productRouter.post(
-  '/v1/addproduct',
+  '/v1/product',
   auth,
   multerHost({
     extensions: allowedExtensions.image,
@@ -20,8 +22,9 @@ productRouter.post(
   expressAsyncHandler(addProduct)
 );
 
+//Update Product ************************************************
 productRouter.put(
-  '/v1/updateproduct/:productId',
+  '/v1/product/:productId',
   auth,
   multerHost({
     extensions: allowedExtensions.image,
@@ -29,10 +32,14 @@ productRouter.put(
   expressAsyncHandler(updateProduct)
 );
 
+//Delete Product ************************************************
 productRouter.delete(
-  '/v1/deleteproduct/:productId',
+  '/v1/product/:productId',
   auth,
   expressAsyncHandler(deleteProduct)
 );
+
+//Get All Products ************************************************
+productRouter.get('/v1/product', auth, expressAsyncHandler(getAllProducts));
 
 export default productRouter;

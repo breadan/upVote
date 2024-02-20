@@ -15,9 +15,19 @@ const accessToken = new Schema(
       type: Boolean,
       default: true,
     },
+    expireAt: {
+      type: Date,
+      required: true,
+    },
+    // createdAt: {
+    //   type: Date,
+    //   default: Date.now,
+    //   expires: 1000 * 60 * 2,
+    // },
   },
   { timestamps: true }
 );
+
 // accessToken.methods.hasExpired = function () {
 //   var now = Date.now();
 //   return now - Date.parse(createDate) > 60000; // Date is converted to milliseconds to calculate 7 days it > one day = 24 hours * 60 minutes * 60 seconds *1000 milliseconds * 7 days = 604800000

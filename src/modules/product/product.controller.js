@@ -1,3 +1,4 @@
+import { commentModel } from '../../../models/comment.model.js';
 import { productModel } from '../../../models/product.model.js';
 import cloudinaryConnection from '../../../utils/cloudinary.js';
 import generateUniqueString from '../../../utils/generateUniqueString.js';
@@ -83,7 +84,7 @@ const updateProduct = async (req, res, next) => {
 };
 
 //Delete Product ************************************************
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   const { _id } = req.user;
   const { productId } = req.params;
 
@@ -104,5 +105,33 @@ const deleteProduct = async (req, res) => {
     message: 'Product deleted successfully',
   });
 };
+//Get All Products ************************************************
+const getAllProducts = async (req, res, next) => {
+  // const products = await productModel.find().sort({ createdAt: -1 });
+  //to convert products to object not BSON
+  // const products = await productModel.find().lean();
 
-export { addProduct, updateProduct, deleteProduct };
+  //to get comments for all products
+  // for (const product of products) {
+  //   const comments = await commentModel.find({ productId: product._id });
+  //   //add key to put data of comment in it
+  //   product.comments = comments;
+  // }
+
+  //cursor method
+  const products = productModel.find().cursor();
+  let finalResult = [];
+  for (
+    let doc = await products.next();
+    doc != null;
+    doc = await products.next()
+  ) {
+    const comments = await commentModel.find({ productId: doc._id });
+    const docObject = doc.toObject();
+    docObject.comments = comments;
+    finalResult.push(docObject);
+  }
+  res.status(200).json({ message: 'done', products: finalResult });
+};
+
+export { addProduct, updateProduct, deleteProduct, getAllProducts };

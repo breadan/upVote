@@ -49,15 +49,11 @@ const signInHandler = async (req, res, next) => {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIR }
   );
-  // const updateToken = await tokenModel.findOneAndUpdate(
-  //   { userId: isEmailExists._id },
-  //   token,
-  //   { new: true }
-  // );
-  // console.log(updateToken);
-  // if (!updateToken) {
-  await tokenModel.create({ token, userId: isEmailExists._id });
-  // }
+
+  const expireAt = new Date();
+  expireAt.setTime(expireAt.getTime() + 1000 * 60 * 4);
+  await tokenModel.create({ token, userId: isEmailExists._id, expireAt });
+
   return res.status(200).json({ message: 'User login successfully', token });
 };
 //get User Profile************************************************

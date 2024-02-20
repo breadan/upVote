@@ -5,27 +5,36 @@ import './config/connection.js';
 import userRouter from './src/routes/user.rout.js';
 import productRouter from './src/routes/product.route.js';
 import likeRouter from './src/routes/like.route.js';
+import commentRouter from './src/routes/comment.route.js';
 import schedule from 'node-schedule';
+import tokenModel from './models/token.model.js';
 
+const job = schedule.scheduleJob('42 * * * *', async function () {
+  console.log('The answer to life, the universe, and everything!');
+  // await tokenModel.deleteMany();
+  console.log(
+    await tokenModel.deleteMany({
+      expireAt: {
+        $lte: new Date(),
+      },
+    })
+  );
+});
+
+// const timer = async function (req, res, next) {
+//   console.log('hello');
+//   console.log('The answer to life, the universe, and everything!');
+//   const { isValid } = tokenModel;
+//   const token = await tokenModel.find({ isValid });
+//   let tokensArr = [];
+//   tokensArr.push(token);
+//   console.log(tokensArr);
+// };
+// setInterval(() => {
+//   // timer();
+// }, 2000);
 const port = process.env.PORT || 7000;
 const mode = process.env.NODE_ENV;
-
-const hello = () => {
-  console.log('hello');
-};
-setTimeout(function () {
-  hello();
-}, 1000);
-const job = schedule.scheduleJob('59 * * * *', async function () {
-  console.log('The answer to life, the universe, and everything!');
-  const info = jwt.verify(token, process.env.JWT_SECRET);
-  console.log(info);
-  if (!info || !info._id) {
-    let data = await tokenModel.findByIdAndDelete(info.id);
-    console.log(info.id);
-    return next(new Error(`Invalid Token Payload`, { cause: 400 }));
-  }
-});
 
 //secure 2
 dotenv.config();
@@ -41,6 +50,7 @@ app.use('/uploads', express.static('uploads'));
 app.use(userRouter);
 app.use(productRouter);
 app.use(likeRouter);
+app.use(commentRouter);
 
 //error handling
 app.all('*', (req, res, next) => {
