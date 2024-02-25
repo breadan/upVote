@@ -49,8 +49,8 @@ app.use('/uploads', express.static('uploads'));
 // Routes
 app.use(userRouter);
 app.use(productRouter);
-app.use(likeRouter);
-app.use(commentRouter);
+app.use('/v1/like', likeRouter);
+app.use('/v1/comment', commentRouter);
 
 //error handling
 app.all('*', (req, res, next) => {

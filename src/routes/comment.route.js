@@ -5,11 +5,7 @@ import { addComment } from '../modules/comment/comment.controller.js';
 
 const commentRouter = express.Router();
 
-commentRouter.post(
-  '/v1/comment/:productId',
-  auth,
-  expressAsyncHandler(addComment)
-);
+commentRouter.post('/:productId', auth, expressAsyncHandler(addComment));
 // likeRouter.get(
 //   '/v1/getlikes/:productId',
 //   expressAsyncHandler(getAllLikesProduct)

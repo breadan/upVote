@@ -49,7 +49,7 @@ const signInHandler = async (req, res, next) => {
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIR }
   );
-
+  //timer in mongoose
   const expireAt = new Date();
   expireAt.setTime(expireAt.getTime() + 1000 * 60 * 4);
   await tokenModel.create({ token, userId: isEmailExists._id, expireAt });
